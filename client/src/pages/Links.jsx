@@ -35,7 +35,7 @@ const Links = () => {
       await axios.delete(`${API_URL}/api/links/${id}`, config);
       setLinks(links.filter(l => l._id !== id));
     } catch (error) {
-      console.error(`Error deleting link', error);
+      console.error('Error deleting link', error);
     }
   };
 

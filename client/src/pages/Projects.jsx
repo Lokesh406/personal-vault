@@ -43,7 +43,7 @@ const Projects = () => {
       await axios.delete(`${API_URL}/api/projects/${id}`, config);
       setProjects(projects.filter(p => p._id !== id));
     } catch (error) {
-      console.error(`Error deleting project', error);
+      console.error('Error deleting project', error);
     }
   };
 

@@ -56,7 +56,7 @@ const Folders = () => {
       await axios.delete(`${API_URL}/api/folders/${id}`, config);
       setFolders(folders.filter(f => f._id !== id));
     } catch (error) {
-      console.error(`Error deleting folder', error);
+      console.error('Error deleting folder', error);
     }
   };
 

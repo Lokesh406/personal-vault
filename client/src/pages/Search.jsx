@@ -28,7 +28,7 @@ const Search = () => {
       const { data } = await axios.get(`${API_URL}/api/search?q=${encodeURIComponent(q)}`, config);
       setResults(data);
     } catch (error) {
-      console.error(`Error searching', error);
+      console.error('Error searching', error);
     } finally {
       setLoading(false);
     }

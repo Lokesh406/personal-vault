@@ -38,7 +38,7 @@ const Videos = () => {
       await axios.delete(`${API_URL}/api/documents/${id}`, config);
       setVideos(videos.filter(vid => vid._id !== id));
     } catch (error) {
-      console.error(`Error deleting video', error);
+      console.error('Error deleting video', error);
     }
   };
 

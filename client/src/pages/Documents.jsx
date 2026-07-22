@@ -45,7 +45,7 @@ const Documents = ({ categoryFilter }) => {
       await axios.delete(`${API_URL}/api/documents/${id}`, config);
       setDocuments(documents.filter(d => d._id !== id));
     } catch (error) {
-      console.error(`Error deleting document', error);
+      console.error('Error deleting document', error);
     }
   };
 

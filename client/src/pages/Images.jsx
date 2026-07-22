@@ -40,7 +40,7 @@ const Images = () => {
       await axios.delete(`${API_URL}/api/documents/${id}`, config);
       setImages(images.filter(img => img._id !== id));
     } catch (error) {
-      console.error(`Error deleting image', error);
+      console.error('Error deleting image', error);
     }
   };
 

@@ -30,7 +30,7 @@ const FolderDetails = () => {
       setFolder(data.folder);
       setDocuments(data.documents);
     } catch (error) {
-      console.error(`Error fetching folder contents', error);
+      console.error('Error fetching folder contents', error);
     } finally {
       setLoading(false);
     }
@@ -44,7 +44,7 @@ const FolderDetails = () => {
       await axios.delete(`${API_URL}/api/documents/${docId}`, config);
       setDocuments(documents.filter(d => d._id !== docId));
     } catch (error) {
-      console.error(`Error deleting document', error);
+      console.error('Error deleting document', error);
     }
   };
 

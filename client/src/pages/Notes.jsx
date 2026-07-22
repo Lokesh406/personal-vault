@@ -44,7 +44,7 @@ const Notes = () => {
         setActiveNote(null);
       }
     } catch (error) {
-      console.error(`Error deleting note', error);
+      console.error('Error deleting note', error);
     }
   };
 
