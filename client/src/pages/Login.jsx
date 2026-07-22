@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
-import { FiLock, FiMail, FiShield, FiUser } from 'react-icons/fi';
+import { FiLock, FiMail, FiShield, FiUser, FiEye, FiEyeOff } from 'react-icons/fi';
 import { API_URL } from '../config';
 
 const Login = () => {
@@ -12,6 +12,8 @@ const Login = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showSecretCode, setShowSecretCode] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
@@ -82,13 +84,20 @@ const Login = () => {
                   <FiLock className="text-muted-foreground" />
                 </div>
                 <input
-                  type="password"
+                  type={showSecretCode ? "text" : "password"}
                   value={secretCode}
                   onChange={(e) => setSecretCode(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-input text-foreground rounded-xl focus:outline-none focus:ring-2 focus:ring-primary border border-border transition-all"
+                  className="w-full pl-10 pr-12 py-3 bg-input text-foreground rounded-xl focus:outline-none focus:ring-2 focus:ring-primary border border-border transition-all"
                   placeholder="Secret Code"
                   required
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowSecretCode(!showSecretCode)}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {showSecretCode ? <FiEyeOff /> : <FiEye />}
+                </button>
               </div>
               
               {error && <p className="text-destructive text-sm text-center bg-destructive/10 py-2 rounded-lg">{error}</p>}
@@ -143,13 +152,20 @@ const Login = () => {
                   <FiLock className="text-muted-foreground" />
                 </div>
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 bg-input text-foreground rounded-xl focus:outline-none focus:ring-2 focus:ring-primary border border-border transition-all"
+                  className="w-full pl-10 pr-12 py-3 bg-input text-foreground rounded-xl focus:outline-none focus:ring-2 focus:ring-primary border border-border transition-all"
                   placeholder="Password"
                   required
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  {showPassword ? <FiEyeOff /> : <FiEye />}
+                </button>
               </div>
               
               {error && <p className="text-destructive text-sm text-center bg-destructive/10 py-2 rounded-lg">{error}</p>}
