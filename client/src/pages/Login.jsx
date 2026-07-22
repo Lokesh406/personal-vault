@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 import { FiLock, FiMail, FiShield, FiUser } from 'react-icons/fi';
+import { API_URL } from '../config';
 
 const Login = () => {
   const [step, setStep] = useState(1);
@@ -18,7 +19,7 @@ const Login = () => {
     e.preventDefault();
     setError('');
     try {
-      const { data } = await axios.post('http://localhost:5000/api/auth/verify-code', { code: secretCode });
+      const { data } = await axios.post(`${API_URL}/api/auth/verify-code`, { code: secretCode });
       if (data.success) {
         setStep(2);
       }
@@ -36,7 +37,7 @@ const Login = () => {
         ? { email, password } 
         : { name, email, password, code: secretCode };
         
-      const { data } = await axios.post(`http://localhost:5000${endpoint}`, payload);
+      const { data } = await axios.post(`${API_URL}${endpoint}`, payload);
       localStorage.setItem('userInfo', JSON.stringify(data));
       navigate('/dashboard');
     } catch (err) {

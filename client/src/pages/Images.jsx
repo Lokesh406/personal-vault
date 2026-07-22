@@ -3,6 +3,7 @@ import axios from 'axios';
 import { motion } from 'framer-motion';
 import { FiTrash2, FiUploadCloud, FiImage, FiDownload } from 'react-icons/fi';
 import { jsPDF } from 'jspdf';
+import { API_URL } from '../config';
 
 const Images = () => {
   const [images, setImages] = useState([]);
@@ -22,7 +23,7 @@ const Images = () => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-      const { data } = await axios.get('http://localhost:5000/api/documents', config);
+      const { data } = await axios.get(`${API_URL}/api/documents`, config);
       setImages(data.filter(d => d.category === 'Image' || d.mimetype.startsWith('image/')));
     } catch (error) {
       console.error('Error fetching images', error);
@@ -36,10 +37,10 @@ const Images = () => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-      await axios.delete(`http://localhost:5000/api/documents/${id}`, config);
+      await axios.delete(`${API_URL}/api/documents/${id}`, config);
       setImages(images.filter(img => img._id !== id));
     } catch (error) {
-      console.error('Error deleting image', error);
+      console.error(`Error deleting image', error);
     }
   };
 
@@ -69,10 +70,10 @@ const Images = () => {
 
   const handleDownloadJPG = async (img) => {
     try {
-      const response = await fetch(`http://localhost:5000/${img.path}`);
+      const response = await fetch(`${API_URL}/${img.path}`);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
+      const link = document.createElement(`a');
       link.href = url;
       link.download = `${img.title}.jpg`;
       document.body.appendChild(link);
@@ -87,7 +88,7 @@ const Images = () => {
 
   const handleDownloadPDF = async (img) => {
     try {
-      const imgUrl = `http://localhost:5000/${img.path}`;
+      const imgUrl = `${API_URL}/${img.path}`;
       const response = await fetch(imgUrl);
       const blob = await response.blob();
       
@@ -95,7 +96,7 @@ const Images = () => {
       reader.onload = function() {
         const imgData = reader.result;
         const pdf = new jsPDF();
-        pdf.addImage(imgData, 'JPEG', 10, 10, 190, 0); 
+        pdf.addImage(imgData, `JPEG', 10, 10, 190, 0); 
         pdf.save(`${img.title}.pdf`);
       };
       reader.readAsDataURL(blob);
@@ -124,7 +125,7 @@ const Images = () => {
         } 
       };
       
-      const { data } = await axios.post('http://localhost:5000/api/documents', formData, config);
+      const { data } = await axios.post(`${API_URL}/api/documents`, formData, config);
       setImages([...images, data]);
       setShowModal(false);
       setFile(null);
@@ -196,7 +197,7 @@ const Images = () => {
           {images.map((img) => (
             <div key={img._id} className="relative group overflow-hidden rounded-xl border border-border bg-card shadow-sm aspect-square">
               <img 
-                src={`http://localhost:5000/${img.path}`} 
+                src={`${API_URL}/${img.path}`} 
                 alt={img.title} 
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
@@ -248,7 +249,7 @@ const Images = () => {
                 <label className="text-sm font-medium">Select Image</label>
                 <div className="mt-1 flex items-center justify-center w-full">
                   <label 
-                    className={`flex flex-col items-center justify-center w-full h-32 border-2 rounded-lg cursor-pointer transition-colors ${isDragging ? 'border-primary bg-primary/10 border-solid' : 'border-border border-dashed bg-input hover:bg-secondary'}`}
+                    className={`flex flex-col items-center justify-center w-full h-32 border-2 rounded-lg cursor-pointer transition-colors ${isDragging ? `border-primary bg-primary/10 border-solid' : 'border-border border-dashed bg-input hover:bg-secondary'}`}
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
@@ -304,7 +305,7 @@ const Images = () => {
               </button>
             </div>
             <img 
-              src={`http://localhost:5000/${selectedImage.path}`} 
+              src={`${API_URL}/${selectedImage.path}`} 
               alt={selectedImage.title} 
               className="max-w-full max-h-[80vh] object-contain rounded-md shadow-2xl"
             />

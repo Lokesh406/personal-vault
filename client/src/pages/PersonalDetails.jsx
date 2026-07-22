@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
+import { API_URL } from '../config';
 
 const PersonalDetails = () => {
   const [details, setDetails] = useState({
@@ -24,7 +25,7 @@ const PersonalDetails = () => {
         const config = {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         };
-        const { data } = await axios.get('http://localhost:5000/api/personal-details', config);
+        const { data } = await axios.get(`${API_URL}/api/personal-details`, config);
         if (data && data._id) {
           setDetails({
             name: data.name || '',
@@ -58,7 +59,7 @@ const PersonalDetails = () => {
       const config = {
         headers: { Authorization: `Bearer ${userInfo.token}` },
       };
-      await axios.post('http://localhost:5000/api/personal-details', details, config);
+      await axios.post(`${API_URL}/api/personal-details`, details, config);
       setMessage('Details saved successfully!');
     } catch (error) {
       setMessage('Error saving details.');

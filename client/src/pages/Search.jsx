@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { FiSearch, FiFileText, FiLink, FiFolder, FiImage, FiVideo, FiFile } from 'react-icons/fi';
+import { API_URL } from '../config';
 
 const Search = () => {
   const [searchParams] = useSearchParams();
@@ -24,10 +25,10 @@ const Search = () => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-      const { data } = await axios.get(`http://localhost:5000/api/search?q=${encodeURIComponent(q)}`, config);
+      const { data } = await axios.get(`${API_URL}/api/search?q=${encodeURIComponent(q)}`, config);
       setResults(data);
     } catch (error) {
-      console.error('Error searching', error);
+      console.error(`Error searching', error);
     } finally {
       setLoading(false);
     }
@@ -101,7 +102,7 @@ const Search = () => {
               </h3>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {results.documents.map(doc => (
-                  <a key={doc._id} href={`http://localhost:5000/${doc.path}`} className="bg-card p-4 rounded-xl border border-border shadow-sm hover:border-primary transition-colors flex items-center space-x-3">
+                  <a key={doc._id} href={`${API_URL}/${doc.path}`} className="bg-card p-4 rounded-xl border border-border shadow-sm hover:border-primary transition-colors flex items-center space-x-3">
                     <div className="text-2xl">{getDocIcon(doc.mimetype)}</div>
                     <div className="min-w-0">
                       <h4 className="font-medium text-sm truncate">{doc.title}</h4>
@@ -137,7 +138,7 @@ const Search = () => {
             <div className="p-12 text-center bg-card rounded-xl border border-border">
               <FiSearch className="text-4xl text-muted-foreground mx-auto mb-4 opacity-50" />
               <h3 className="text-lg font-medium">No results found</h3>
-              <p className="text-muted-foreground mt-1">We couldn't find anything matching "{query}".</p>
+              <p className="text-muted-foreground mt-1">We couldn`t find anything matching "{query}".</p>
             </div>
           )}
         </div>

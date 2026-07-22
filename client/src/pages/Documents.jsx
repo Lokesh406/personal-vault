@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { FiFile, FiTrash2, FiDownload, FiUploadCloud, FiImage, FiVideo, FiFileText } from 'react-icons/fi';
+import { API_URL } from '../config';
 
 const Documents = ({ categoryFilter }) => {
   const [documents, setDocuments] = useState([]);
@@ -22,7 +23,7 @@ const Documents = ({ categoryFilter }) => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-      const { data } = await axios.get('http://localhost:5000/api/documents', config);
+      const { data } = await axios.get(`${API_URL}/api/documents`, config);
       
       if (categoryFilter) {
         setDocuments(data.filter(d => d.category === categoryFilter));
@@ -41,10 +42,10 @@ const Documents = ({ categoryFilter }) => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-      await axios.delete(`http://localhost:5000/api/documents/${id}`, config);
+      await axios.delete(`${API_URL}/api/documents/${id}`, config);
       setDocuments(documents.filter(d => d._id !== id));
     } catch (error) {
-      console.error('Error deleting document', error);
+      console.error(`Error deleting document', error);
     }
   };
 
@@ -96,7 +97,7 @@ const Documents = ({ categoryFilter }) => {
         } 
       };
       
-      const { data } = await axios.post('http://localhost:5000/api/documents', formData, config);
+      const { data } = await axios.post(`${API_URL}/api/documents`, formData, config);
       setDocuments([...documents, data]);
       setShowModal(false);
       setFile(null);
@@ -191,7 +192,7 @@ const Documents = ({ categoryFilter }) => {
               </div>
               <div className="flex border-t border-border bg-card">
                 <a 
-                  href={`http://localhost:5000/${doc.path}`} 
+                  href={`${API_URL}/${doc.path}`} 
                   className="flex-1 flex justify-center items-center py-3 text-muted-foreground hover:text-primary hover:bg-secondary transition-colors"
                 >
                   <FiDownload className="mr-2" /> <span className="text-sm font-medium">View / DL</span>
@@ -219,7 +220,7 @@ const Documents = ({ categoryFilter }) => {
                 <label className="text-sm font-medium">Select File</label>
                 <div className="mt-1 flex items-center justify-center w-full">
                   <label 
-                    className={`flex flex-col items-center justify-center w-full h-32 border-2 rounded-lg cursor-pointer transition-colors ${isDragging ? 'border-primary bg-primary/10 border-solid' : 'border-border border-dashed bg-input hover:bg-secondary'}`}
+                    className={`flex flex-col items-center justify-center w-full h-32 border-2 rounded-lg cursor-pointer transition-colors ${isDragging ? `border-primary bg-primary/10 border-solid' : 'border-border border-dashed bg-input hover:bg-secondary'}`}
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}

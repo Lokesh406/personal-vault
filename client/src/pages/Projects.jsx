@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { FiGithub, FiExternalLink, FiPlus, FiTrash2, FiEdit2 } from 'react-icons/fi';
+import { API_URL } from '../config';
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
@@ -25,7 +26,7 @@ const Projects = () => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-      const { data } = await axios.get('http://localhost:5000/api/projects', config);
+      const { data } = await axios.get(`${API_URL}/api/projects`, config);
       setProjects(data);
     } catch (error) {
       console.error('Error fetching projects', error);
@@ -39,10 +40,10 @@ const Projects = () => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-      await axios.delete(`http://localhost:5000/api/projects/${id}`, config);
+      await axios.delete(`${API_URL}/api/projects/${id}`, config);
       setProjects(projects.filter(p => p._id !== id));
     } catch (error) {
-      console.error('Error deleting project', error);
+      console.error(`Error deleting project', error);
     }
   };
 
@@ -76,10 +77,10 @@ const Projects = () => {
       };
 
       if (activeProject) {
-        const { data } = await axios.put(`http://localhost:5000/api/projects/${activeProject._id}`, payload, config);
+        const { data } = await axios.put(`${API_URL}/api/projects/${activeProject._id}`, payload, config);
         setProjects(projects.map(p => p._id === data._id ? data : p));
       } else {
-        const { data } = await axios.post('http://localhost:5000/api/projects', payload, config);
+        const { data } = await axios.post(`${API_URL}/api/projects`, payload, config);
         setProjects([...projects, data]);
       }
       

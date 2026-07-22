@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FiFolder, FiFolderPlus, FiTrash2, FiFileText } from 'react-icons/fi';
+import { API_URL } from '../config';
 
 const Folders = () => {
   const [folders, setFolders] = useState([]);
@@ -19,7 +20,7 @@ const Folders = () => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-      const { data } = await axios.get('http://localhost:5000/api/folders', config);
+      const { data } = await axios.get(`${API_URL}/api/folders`, config);
       setFolders(data);
     } catch (error) {
       console.error('Error fetching folders', error);
@@ -35,7 +36,7 @@ const Folders = () => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-      const { data } = await axios.post('http://localhost:5000/api/folders', { name, description }, config);
+      const { data } = await axios.post(`${API_URL}/api/folders`, { name, description }, config);
       setFolders([data, ...folders]);
       setShowModal(false);
       setName('');
@@ -52,10 +53,10 @@ const Folders = () => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-      await axios.delete(`http://localhost:5000/api/folders/${id}`, config);
+      await axios.delete(`${API_URL}/api/folders/${id}`, config);
       setFolders(folders.filter(f => f._id !== id));
     } catch (error) {
-      console.error('Error deleting folder', error);
+      console.error(`Error deleting folder', error);
     }
   };
 

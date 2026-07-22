@@ -10,6 +10,7 @@ import {
   FiEdit3
 } from 'react-icons/fi';
 import axios from 'axios';
+import { API_URL } from '../config';
 
 const StatCard = ({ title, value, icon, delay, link }) => (
   <Link to={link}>
@@ -56,9 +57,9 @@ const Dashboard = () => {
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
       
       const [projRes, docRes, noteRes] = await Promise.all([
-        axios.get('http://localhost:5000/api/projects', config),
-        axios.get('http://localhost:5000/api/documents', config),
-        axios.get('http://localhost:5000/api/notes', config)
+        axios.get(`${API_URL}/api/projects`, config),
+        axios.get(`${API_URL}/api/documents`, config),
+        axios.get(`${API_URL}/api/notes`, config)
       ]);
       
       const docs = docRes.data;
@@ -82,7 +83,7 @@ const Dashboard = () => {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
       
-      await axios.post('http://localhost:5000/api/notes', { ...quickNote, category: 'General' }, config);
+      await axios.post(`${API_URL}/api/notes`, { ...quickNote, category: 'General' }, config);
       setQuickNote({ title: '', content: '' });
       setNoteStatus('Saved successfully!');
       fetchStats();
@@ -132,7 +133,7 @@ const Dashboard = () => {
       const config = { 
         headers: { Authorization: `Bearer ${userInfo.token}`, 'Content-Type': 'multipart/form-data' } 
       };
-      await axios.post('http://localhost:5000/api/documents', formData, config);
+      await axios.post(`${API_URL}/api/documents`, formData, config);
       setUploadStatus('Uploaded successfully!');
       fetchStats();
       setTimeout(() => setUploadStatus(''), 3000);

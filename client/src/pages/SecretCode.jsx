@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import axios from 'axios';
+import { API_URL } from '../config';
 
 const SecretCode = () => {
   const [code, setCode] = useState('');
@@ -11,7 +12,7 @@ const SecretCode = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('http://localhost:5000/api/auth/verify-code', { code });
+      const { data } = await axios.post(`${API_URL}/api/auth/verify-code`, { code });
       if (data.success) {
         localStorage.setItem('secretCodeVerified', 'true');
         navigate('/login');

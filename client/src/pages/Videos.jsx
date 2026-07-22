@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { FiTrash2, FiUploadCloud, FiVideo } from 'react-icons/fi';
+import { API_URL } from '../config';
 
 const Videos = () => {
   const [videos, setVideos] = useState([]);
@@ -20,7 +21,7 @@ const Videos = () => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-      const { data } = await axios.get('http://localhost:5000/api/documents', config);
+      const { data } = await axios.get(`${API_URL}/api/documents`, config);
       setVideos(data.filter(d => d.category === 'Video' || d.mimetype.startsWith('video/')));
     } catch (error) {
       console.error('Error fetching videos', error);
@@ -34,10 +35,10 @@ const Videos = () => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-      await axios.delete(`http://localhost:5000/api/documents/${id}`, config);
+      await axios.delete(`${API_URL}/api/documents/${id}`, config);
       setVideos(videos.filter(vid => vid._id !== id));
     } catch (error) {
-      console.error('Error deleting video', error);
+      console.error(`Error deleting video', error);
     }
   };
 
@@ -84,7 +85,7 @@ const Videos = () => {
         } 
       };
       
-      const { data } = await axios.post('http://localhost:5000/api/documents', formData, config);
+      const { data } = await axios.post(`${API_URL}/api/documents`, formData, config);
       setVideos([...videos, data]);
       setShowModal(false);
       setFile(null);
@@ -157,7 +158,7 @@ const Videos = () => {
             <div key={vid._id} className="rounded-xl border border-border bg-card shadow-sm overflow-hidden flex flex-col group">
               <div className="aspect-video bg-black relative">
                 <video 
-                  src={`http://localhost:5000/${vid.path}`} 
+                  src={`${API_URL}/${vid.path}`} 
                   controls 
                   className="w-full h-full"
                   preload="metadata"
@@ -188,7 +189,7 @@ const Videos = () => {
                 <label className="text-sm font-medium">Select Video</label>
                 <div className="mt-1 flex items-center justify-center w-full">
                   <label 
-                    className={`flex flex-col items-center justify-center w-full h-32 border-2 rounded-lg cursor-pointer transition-colors ${isDragging ? 'border-primary bg-primary/10 border-solid' : 'border-border border-dashed bg-input hover:bg-secondary'}`}
+                    className={`flex flex-col items-center justify-center w-full h-32 border-2 rounded-lg cursor-pointer transition-colors ${isDragging ? `border-primary bg-primary/10 border-solid' : 'border-border border-dashed bg-input hover:bg-secondary'}`}
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}

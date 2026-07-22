@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { FiExternalLink, FiTrash2, FiPlus } from 'react-icons/fi';
+import { API_URL } from '../config';
 
 const Links = () => {
   const [links, setLinks] = useState([]);
@@ -17,7 +18,7 @@ const Links = () => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-      const { data } = await axios.get('http://localhost:5000/api/links', config);
+      const { data } = await axios.get(`${API_URL}/api/links`, config);
       setLinks(data);
     } catch (error) {
       console.error('Error fetching links', error);
@@ -31,10 +32,10 @@ const Links = () => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-      await axios.delete(`http://localhost:5000/api/links/${id}`, config);
+      await axios.delete(`${API_URL}/api/links/${id}`, config);
       setLinks(links.filter(l => l._id !== id));
     } catch (error) {
-      console.error('Error deleting link', error);
+      console.error(`Error deleting link', error);
     }
   };
 
@@ -43,7 +44,7 @@ const Links = () => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-      const { data } = await axios.post('http://localhost:5000/api/links', newLink, config);
+      const { data } = await axios.post(`${API_URL}/api/links`, newLink, config);
       setLinks([...links, data]);
       setShowModal(false);
       setNewLink({ title: '', url: '', category: 'General' });

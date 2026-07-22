@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { FiUploadCloud, FiTrash2, FiFile, FiImage, FiVideo, FiFileText, FiArrowLeft, FiDownload } from 'react-icons/fi';
+import { API_URL } from '../config';
 
 const FolderDetails = () => {
   const { id } = useParams();
@@ -25,11 +26,11 @@ const FolderDetails = () => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-      const { data } = await axios.get(`http://localhost:5000/api/folders/${id}`, config);
+      const { data } = await axios.get(`${API_URL}/api/folders/${id}`, config);
       setFolder(data.folder);
       setDocuments(data.documents);
     } catch (error) {
-      console.error('Error fetching folder contents', error);
+      console.error(`Error fetching folder contents', error);
     } finally {
       setLoading(false);
     }
@@ -40,10 +41,10 @@ const FolderDetails = () => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-      await axios.delete(`http://localhost:5000/api/documents/${docId}`, config);
+      await axios.delete(`${API_URL}/api/documents/${docId}`, config);
       setDocuments(documents.filter(d => d._id !== docId));
     } catch (error) {
-      console.error('Error deleting document', error);
+      console.error(`Error deleting document', error);
     }
   };
 
@@ -67,7 +68,7 @@ const FolderDetails = () => {
         } 
       };
       
-      const { data } = await axios.post('http://localhost:5000/api/documents', formData, config);
+      const { data } = await axios.post(`${API_URL}/api/documents`, formData, config);
       setDocuments([data, ...documents]);
       setShowModal(false);
       setFile(null);
@@ -150,9 +151,9 @@ const FolderDetails = () => {
             <div key={doc._id} className="bg-card rounded-xl border border-border shadow-sm flex flex-col hover:border-primary/50 transition-colors overflow-hidden group">
               {doc.mimetype.startsWith('image/') ? (
                 <div className="aspect-square bg-black relative">
-                  <img src={`http://localhost:5000/${doc.path}`} alt={doc.title} className="w-full h-full object-cover" />
+                  <img src={`${API_URL}/${doc.path}`} alt={doc.title} className="w-full h-full object-cover" />
                 </div>
-              ) : doc.mimetype.startsWith('video/') ? (
+              ) : doc.mimetype.startsWith(`video/') ? (
                 <div className="aspect-square bg-black flex items-center justify-center">
                    <FiVideo className="text-5xl text-white/50" />
                 </div>
@@ -169,7 +170,7 @@ const FolderDetails = () => {
                 </div>
                 <div className="flex items-center justify-between mt-3">
                   <a 
-                    href={`http://localhost:5000/${doc.path}`}
+                    href={`${API_URL}/${doc.path}`}
                     className="text-primary text-xs hover:underline flex items-center"
                   >
                     <FiDownload className="mr-1" /> View
@@ -198,7 +199,7 @@ const FolderDetails = () => {
                 <p className="text-muted-foreground text-sm mb-6">Select the type of file to organize it properly.</p>
                 
                 <div className="grid grid-cols-2 gap-3 mb-6">
-                  {['Document', 'Image', 'Video', 'Resume', 'Certificate'].map((cat) => (
+                  {[`Document', 'Image', 'Video', 'Resume', 'Certificate'].map((cat) => (
                     <button
                       key={cat}
                       onClick={() => handleCategorySelect(cat)}

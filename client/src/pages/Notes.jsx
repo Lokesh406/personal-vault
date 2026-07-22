@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import { FiEdit2, FiTrash2, FiPlus, FiX } from 'react-icons/fi';
+import { API_URL } from '../config';
 
 const Notes = () => {
   const [notes, setNotes] = useState([]);
@@ -23,7 +24,7 @@ const Notes = () => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-      const { data } = await axios.get('http://localhost:5000/api/notes', config);
+      const { data } = await axios.get(`${API_URL}/api/notes`, config);
       setNotes(data);
     } catch (error) {
       console.error('Error fetching notes', error);
@@ -37,13 +38,13 @@ const Notes = () => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo'));
       const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-      await axios.delete(`http://localhost:5000/api/notes/${id}`, config);
+      await axios.delete(`${API_URL}/api/notes/${id}`, config);
       setNotes(notes.filter(n => n._id !== id));
       if (activeNote && activeNote._id === id) {
         setActiveNote(null);
       }
     } catch (error) {
-      console.error('Error deleting note', error);
+      console.error(`Error deleting note', error);
     }
   };
 
@@ -71,11 +72,11 @@ const Notes = () => {
       
       if (activeNote) {
         // Update
-        const { data } = await axios.put(`http://localhost:5000/api/notes/${activeNote._id}`, formData, config);
+        const { data } = await axios.put(`${API_URL}/api/notes/${activeNote._id}`, formData, config);
         setNotes(notes.map(n => n._id === data._id ? data : n));
       } else {
         // Create
-        const { data } = await axios.post('http://localhost:5000/api/notes', formData, config);
+        const { data } = await axios.post(`${API_URL}/api/notes`, formData, config);
         setNotes([...notes, data]);
       }
       
