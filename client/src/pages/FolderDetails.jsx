@@ -153,7 +153,7 @@ const FolderDetails = () => {
                 <div className="aspect-square bg-black relative">
                   <img src={`${doc.path.startsWith('http') ? doc.path : `${API_URL}/${doc.path}`}`} alt={doc.title} className="w-full h-full object-cover" />
                 </div>
-              ) : doc.mimetype.startsWith(`video/') ? (
+              ) : doc.mimetype.startsWith('video/') ? (
                 <div className="aspect-square bg-black flex items-center justify-center">
                    <FiVideo className="text-5xl text-white/50" />
                 </div>
@@ -199,7 +199,7 @@ const FolderDetails = () => {
                 <p className="text-muted-foreground text-sm mb-6">Select the type of file to organize it properly.</p>
                 
                 <div className="grid grid-cols-2 gap-3 mb-6">
-                  {[`Document', 'Image', 'Video', 'Resume', 'Certificate'].map((cat) => (
+                  {['Document', 'Image', 'Video', 'Resume', 'Certificate'].map((cat) => (
                     <button
                       key={cat}
                       onClick={() => handleCategorySelect(cat)}

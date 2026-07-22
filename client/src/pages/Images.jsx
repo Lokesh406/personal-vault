@@ -73,7 +73,7 @@ const Images = () => {
       const response = await fetch(`${img.path.startsWith('http') ? img.path : `${API_URL}/${img.path}`}`);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
-      const link = document.createElement(`a');
+      const link = document.createElement('a');
       link.href = url;
       link.download = `${img.title}.jpg`;
       document.body.appendChild(link);
@@ -96,7 +96,7 @@ const Images = () => {
       reader.onload = function() {
         const imgData = reader.result;
         const pdf = new jsPDF();
-        pdf.addImage(imgData, `JPEG', 10, 10, 190, 0); 
+        pdf.addImage(imgData, 'JPEG', 10, 10, 190, 0); 
         pdf.save(`${img.title}.pdf`);
       };
       reader.readAsDataURL(blob);
@@ -249,7 +249,7 @@ const Images = () => {
                 <label className="text-sm font-medium">Select Image</label>
                 <div className="mt-1 flex items-center justify-center w-full">
                   <label 
-                    className={`flex flex-col items-center justify-center w-full h-32 border-2 rounded-lg cursor-pointer transition-colors ${isDragging ? `border-primary bg-primary/10 border-solid' : 'border-border border-dashed bg-input hover:bg-secondary'}`}
+                    className={`flex flex-col items-center justify-center w-full h-32 border-2 rounded-lg cursor-pointer transition-colors ${isDragging ? 'border-primary bg-primary/10 border-solid' : 'border-border border-dashed bg-input hover:bg-secondary'}`}
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
