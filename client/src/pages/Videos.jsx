@@ -158,7 +158,7 @@ const Videos = () => {
             <div key={vid._id} className="rounded-xl border border-border bg-card shadow-sm overflow-hidden flex flex-col group">
               <div className="aspect-video bg-black relative">
                 <video 
-                  src={`${API_URL}/${vid.path}`} 
+                  src={`${vid.path.startsWith('http') ? vid.path : `${API_URL}/${vid.path}`}`} 
                   controls 
                   className="w-full h-full"
                   preload="metadata"

@@ -102,7 +102,7 @@ const Search = () => {
               </h3>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {results.documents.map(doc => (
-                  <a key={doc._id} href={`${API_URL}/${doc.path}`} className="bg-card p-4 rounded-xl border border-border shadow-sm hover:border-primary transition-colors flex items-center space-x-3">
+                  <a key={doc._id} href={`${doc.path.startsWith('http') ? doc.path : `${API_URL}/${doc.path}`}`} className="bg-card p-4 rounded-xl border border-border shadow-sm hover:border-primary transition-colors flex items-center space-x-3">
                     <div className="text-2xl">{getDocIcon(doc.mimetype)}</div>
                     <div className="min-w-0">
                       <h4 className="font-medium text-sm truncate">{doc.title}</h4>

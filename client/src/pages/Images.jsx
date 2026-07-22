@@ -70,7 +70,7 @@ const Images = () => {
 
   const handleDownloadJPG = async (img) => {
     try {
-      const response = await fetch(`${API_URL}/${img.path}`);
+      const response = await fetch(`${img.path.startsWith('http') ? img.path : `${API_URL}/${img.path}`}`);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement(`a');
@@ -88,7 +88,7 @@ const Images = () => {
 
   const handleDownloadPDF = async (img) => {
     try {
-      const imgUrl = `${API_URL}/${img.path}`;
+      const imgUrl = `${img.path.startsWith('http') ? img.path : `${API_URL}/${img.path}`}`;
       const response = await fetch(imgUrl);
       const blob = await response.blob();
       
@@ -197,7 +197,7 @@ const Images = () => {
           {images.map((img) => (
             <div key={img._id} className="relative group overflow-hidden rounded-xl border border-border bg-card shadow-sm aspect-square">
               <img 
-                src={`${API_URL}/${img.path}`} 
+                src={`${img.path.startsWith('http') ? img.path : `${API_URL}/${img.path}`}`} 
                 alt={img.title} 
                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
@@ -305,7 +305,7 @@ const Images = () => {
               </button>
             </div>
             <img 
-              src={`${API_URL}/${selectedImage.path}`} 
+              src={`${selectedImage.path.startsWith('http') ? selectedImage.path : `${API_URL}/${selectedImage.path}`}`} 
               alt={selectedImage.title} 
               className="max-w-full max-h-[80vh] object-contain rounded-md shadow-2xl"
             />

@@ -151,7 +151,7 @@ const FolderDetails = () => {
             <div key={doc._id} className="bg-card rounded-xl border border-border shadow-sm flex flex-col hover:border-primary/50 transition-colors overflow-hidden group">
               {doc.mimetype.startsWith('image/') ? (
                 <div className="aspect-square bg-black relative">
-                  <img src={`${API_URL}/${doc.path}`} alt={doc.title} className="w-full h-full object-cover" />
+                  <img src={`${doc.path.startsWith('http') ? doc.path : `${API_URL}/${doc.path}`}`} alt={doc.title} className="w-full h-full object-cover" />
                 </div>
               ) : doc.mimetype.startsWith(`video/') ? (
                 <div className="aspect-square bg-black flex items-center justify-center">
@@ -170,7 +170,7 @@ const FolderDetails = () => {
                 </div>
                 <div className="flex items-center justify-between mt-3">
                   <a 
-                    href={`${API_URL}/${doc.path}`}
+                    href={`${doc.path.startsWith('http') ? doc.path : `${API_URL}/${doc.path}`}`}
                     className="text-primary text-xs hover:underline flex items-center"
                   >
                     <FiDownload className="mr-1" /> View

@@ -192,7 +192,7 @@ const Documents = ({ categoryFilter }) => {
               </div>
               <div className="flex border-t border-border bg-card">
                 <a 
-                  href={`${API_URL}/${doc.path}`} 
+                  href={`${doc.path.startsWith('http') ? doc.path : `${API_URL}/${doc.path}`}`} 
                   className="flex-1 flex justify-center items-center py-3 text-muted-foreground hover:text-primary hover:bg-secondary transition-colors"
                 >
                   <FiDownload className="mr-2" /> <span className="text-sm font-medium">View / DL</span>

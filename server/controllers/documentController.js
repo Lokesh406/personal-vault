@@ -1,6 +1,5 @@
 import Document from '../models/documentModel.js';
-import fs from 'fs';
-import path from 'path';
+import { v2 as cloudinary } from 'cloudinary';
 
 // @desc    Get all documents
 // @route   GET /api/documents
@@ -53,9 +52,12 @@ export const deleteDocument = async (req, res, next) => {
     const document = await Document.findById(req.params.id);
 
     if (document && document.user.toString() === req.user._id.toString()) {
-      // Delete file from filesystem
-      if (fs.existsSync(document.path)) {
-        fs.unlinkSync(document.path);
+      if (document.filename) {
+        try {
+          await cloudinary.uploader.destroy(document.filename);
+        } catch (err) {
+          console.error('Error deleting from Cloudinary', err);
+        }
       }
 
       await Document.deleteOne({ _id: document._id });
