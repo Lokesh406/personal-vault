@@ -26,7 +26,14 @@ const app = express();
 
 // Middleware
 app.use(helmet({ crossOriginResourcePolicy: false }));
-app.use(cors());
+app.use(cors({
+  origin: function (origin, callback) {
+    callback(null, true); // Allow all origins
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
